@@ -31,9 +31,9 @@ for line in inFile:
             output[1] = [output[1][0],*output[1][1]]
             for subline in output[1]:
                 temp = re.split("[=:]",subline)
-                outFile.write(indentationLevel*"\t" + '<' + temp[0] + '>' + '\n')
+                outFile.write(indentationLevel*"\t" + '<' + temp[0].replace(' ', '') + '>' + '\n')
                 outFile.write((indentationLevel+1)*"\t" + temp[-1] + '\n')
-                outFile.write(indentationLevel*"\t" + "</" + temp[0] + '>' + '\n')
+                outFile.write(indentationLevel*"\t" + "</" + temp[0].replace(' ', '') + '>' + '\n')
             indentationLevel -= 1
             outFile.write(indentationLevel*"\t" + "</" + output[0] + '>' + '\n')
 inFile.close()
