@@ -5,8 +5,8 @@ indentationLevel = 0
 inFile = open(inFilename,'r',encoding="utf-8")
 outFile = open(outFilename,'w',encoding="utf-8")
 isOpen = False
-outFile.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
-outFile.write("<array name=\"event_list\">\n")
+outFile.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>")
+outFile.write("<array name=\"event_list\">")
 indentationLevel += 1
 
 def convertDate(date):
