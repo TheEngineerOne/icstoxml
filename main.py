@@ -10,7 +10,6 @@ outFile.write("<array name=\"event_list\">\n")
 indentationLevel += 1
 for line in inFile:
     line = line[:-1]
-    line = line.replace('&',"&amp;")
     if(re.search('BEGIN:VEVENT',line)):
         outFile.write(indentationLevel*"\t" +"<event>" +'\n')
         isOpen = True
@@ -22,6 +21,7 @@ for line in inFile:
     elif(isOpen):
         if(re.search('^[^;]*:[^:]*$',line)):
             output = line.split(':')
+            output[1] = output[1].replace("&","&amp;")
             outFile.write(indentationLevel*"\t" + '<' + output[0] + '>' + '\n')
             outFile.write((indentationLevel+1)*"\t" +output[1]+ '\n')
             outFile.write(indentationLevel*"\t" + "</" + output[0] + '>' +'\n')
@@ -34,6 +34,7 @@ for line in inFile:
             output[1] = [output[1][0],*output[1][1]]
             for subline in output[1]:
                 temp = re.split("[=:]",subline)
+                temp[-1] = temp[-1].replace("&","&amp;")
                 outFile.write(indentationLevel*"\t" + '<' + temp[0].replace(' ', '') + '>' + '\n')
                 outFile.write((indentationLevel+1)*"\t" + temp[-1] + '\n')
                 outFile.write(indentationLevel*"\t" + "</" + temp[0].replace(' ', '') + '>' + '\n')
