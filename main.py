@@ -29,9 +29,9 @@ for line in inFile:
             if(re.fullmatch("[0-9]{8}T[0-9]{6}Z",output[1])):
                 output[1] = convertDate(output[1])
             output[1] = output[1].replace("&","&amp;")
-            outFile.write(indentationLevel*"\t" + '<' + output[0] + '>' + '\n')
-            outFile.write((indentationLevel+1)*"\t" +output[1]+ '\n')
-            outFile.write(indentationLevel*"\t" + "</" + output[0] + '>' +'\n')
+            outFile.write(indentationLevel*"\t" + '<' + output[0] + '>')
+            outFile.write(output[1])
+            outFile.write("</" + output[0] + '>' +'\n')
             
         elif(re.search("^.*;.*$",line)):
             output = line.split(';')
@@ -45,9 +45,9 @@ for line in inFile:
                 if(re.fullmatch("[0-9]{8}T[0-9]{6}Z",temp[-1])):
                     temp[-1] = convertDate(temp[-1])
                 temp[-1] = temp[-1].replace("&","&amp;")
-                outFile.write(indentationLevel*"\t" + '<' + temp[0].replace(' ', '') + '>' + '\n')
-                outFile.write((indentationLevel+1)*"\t" + temp[-1] + '\n')
-                outFile.write(indentationLevel*"\t" + "</" + temp[0].replace(' ', '') + '>' + '\n')
+                outFile.write(indentationLevel*"\t" + '<' + temp[0].replace(' ', '') + '>')
+                outFile.write(temp[-1])
+                outFile.write("</" + temp[0].replace(' ', '') + '>' + '\n')
             indentationLevel -= 1
             outFile.write(indentationLevel*"\t" + "</" + output[0] + '>' + '\n')
 outFile.write("</array>")
