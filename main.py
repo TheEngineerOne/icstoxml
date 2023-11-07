@@ -8,6 +8,11 @@ isOpen = False
 outFile.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
 outFile.write("<array name=\"event_list\">\n")
 indentationLevel += 1
+
+def convertDate(date):
+    return f"{date[0:4]}-{date[4:6]}-{date[6:8]} {date[9:11]}:{date[11:13]}:{date[13:15]}"
+    
+
 for line in inFile:
     line = line[:-1]
     if(re.search('BEGIN:VEVENT',line)):
@@ -19,12 +24,15 @@ for line in inFile:
             outFile.write( indentationLevel*"\t" +"</event>" + '\n')
             isOpen = False
     elif(isOpen):
-        if(re.search('^[^;]*:[^:]*$',line)):
+        if(re.search("^[^;]*:[^:]*$",line)):
             output = line.split(':')
+            if(re.fullmatch("[0-9]{8}T[0-9]{6}Z",output[1])):
+                output[1] = convertDate(output[1])
             output[1] = output[1].replace("&","&amp;")
             outFile.write(indentationLevel*"\t" + '<' + output[0] + '>' + '\n')
             outFile.write((indentationLevel+1)*"\t" +output[1]+ '\n')
             outFile.write(indentationLevel*"\t" + "</" + output[0] + '>' +'\n')
+            
         elif(re.search("^.*;.*$",line)):
             output = line.split(';')
             outFile.write(indentationLevel*"\t" + '<' + output[0] + '>' + '\n')
@@ -34,6 +42,8 @@ for line in inFile:
             output[1] = [output[1][0],*output[1][1]]
             for subline in output[1]:
                 temp = re.split("[=:]",subline)
+                if(re.fullmatch("[0-9]{8}T[0-9]{6}Z",temp[-1])):
+                    temp[-1] = convertDate(temp[-1])
                 temp[-1] = temp[-1].replace("&","&amp;")
                 outFile.write(indentationLevel*"\t" + '<' + temp[0].replace(' ', '') + '>' + '\n')
                 outFile.write((indentationLevel+1)*"\t" + temp[-1] + '\n')
