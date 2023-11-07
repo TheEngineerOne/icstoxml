@@ -5,17 +5,20 @@ indentationLevel = 0
 inFile = open(inFilename,'r',encoding="utf-8")
 outFile = open(outFilename,'w',encoding="utf-8")
 isOpen = False
-
+outFile.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n")
+outFile.write("<array name=\"event_list\">\n")
+indentationLevel += 1
 for line in inFile:
     line = line[:-1]
+    line = line.replace('&',"&amp;")
     if(re.search('BEGIN:VEVENT',line)):
-        outFile.write("<event>" +'\n')
+        outFile.write(indentationLevel*"\t" +"<event>" +'\n')
         isOpen = True
         indentationLevel += 1
     elif(re.search('END:VEVENT',line)):
-            outFile.write("</event>" + '\n')
-            isOpen = False
             indentationLevel -= 1
+            outFile.write( indentationLevel*"\t" +"</event>" + '\n')
+            isOpen = False
     elif(isOpen):
         if(re.search('^[^;]*:[^:]*$',line)):
             output = line.split(':')
@@ -36,5 +39,6 @@ for line in inFile:
                 outFile.write(indentationLevel*"\t" + "</" + temp[0].replace(' ', '') + '>' + '\n')
             indentationLevel -= 1
             outFile.write(indentationLevel*"\t" + "</" + output[0] + '>' + '\n')
+outFile.write("</array>")
 inFile.close()
 outFile.close()
