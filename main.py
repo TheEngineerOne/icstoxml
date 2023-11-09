@@ -32,7 +32,6 @@ for line in inFile:
             outFile.write(indentationLevel*"\t" + '<' + output[0] + '>')
             outFile.write(output[1])
             outFile.write("</" + output[0] + '>' +'\n')
-            
         elif(re.search("^.*;.*$",line)):
             output = line.split(';')
             outFile.write(indentationLevel*"\t" + '<' + output[0] + '>' + '\n')
